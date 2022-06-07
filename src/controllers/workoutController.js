@@ -1,4 +1,7 @@
 const workoutService = require("../services/workoutService");
+const validate = require("../validator/workoutValidate");
+const validator = require("../utils/validator");
+const wrappper = require("../utils/wrapper");
 
 const getAllWorkouts = (req, res) => {
   const getAllWorkouts = workoutService.getAllWorkouts();
@@ -10,12 +13,41 @@ const getOneWorkout = (req, res) => {
   return res.send("get one workout");
 };
 
-const createNewWorkout = (req, res) => {
-  const createNewWorkout = workoutService.createNewWorkout();
-  return res.send("create new workout");
+const createNewWorkout = async (req, res) => {
+  const payload = req.body;
+  const validationPayload = validator.isValidate(
+    validate.createWorkoutSchema,
+    payload
+  );
+  const postRequest = async (result) => {
+    if (result.err) {
+      return result;
+    }
+    const createNewWorkout = workoutService.createNewWorkout();
+    return {
+      err: null,
+      data: "success",
+      code: 200,
+    };
+  };
+
+  const sendResponse = async (result) => {
+    if (result.err) {
+      return wrappper.response(res, "fail", result);
+    } else {
+      return res.status(200).send({
+        status: true,
+        code: 200,
+      });
+    }
+  };
+
+  sendResponse(await postRequest(validationPayload));
 };
 
 const updateOneWorkout = (req, res) => {
+  const payload = req.body;
+
   const updateOneWorkout = workoutService.updateOneWorkout();
   return res.send("update one workout");
 };
