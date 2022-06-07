@@ -23,22 +23,14 @@ const createNewWorkout = async (req, res) => {
     if (result.err) {
       return result;
     }
-    const createNewWorkout = workoutService.createNewWorkout();
-    return {
-      err: null,
-      data: "success",
-      code: 200,
-    };
+    return workoutService.createNewWorkout(result.data);
   };
 
   const sendResponse = async (result) => {
     if (result.err) {
       return wrappper.response(res, "fail", result);
     } else {
-      return res.status(200).send({
-        status: true,
-        code: 200,
-      });
+      return wrappper.response(res, "success", result);
     }
   };
 
