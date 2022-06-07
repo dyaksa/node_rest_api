@@ -3,9 +3,21 @@ const validate = require("../validator/workoutValidate");
 const validator = require("../utils/validator");
 const wrappper = require("../utils/wrapper");
 
-const getAllWorkouts = (req, res) => {
-  const getAllWorkouts = workoutService.getAllWorkouts();
-  return res.send("get all workouts");
+const getAllWorkouts = async (req, res) => {
+  const postRequest = async () => {
+    const getAllWorkouts = workoutService.getAllWorkouts();
+    return getAllWorkouts;
+  };
+
+  const sendResponse = async (result) => {
+    if (result.err) {
+      return wrappper.response(res, "fail", result);
+    } else {
+      return wrappper.response(res, "success", result);
+    }
+  };
+
+  sendResponse(await postRequest());
 };
 
 const getOneWorkout = (req, res) => {

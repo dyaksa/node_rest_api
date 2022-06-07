@@ -4,7 +4,12 @@ const { saveToDatabase } = require("./utils");
 
 module.exports = {
   getAllWorkouts: () => {
-    return DB.workouts;
+    return {
+      err: null,
+      message: "Get data workout success",
+      code: 200,
+      data: DB.workouts,
+    };
   },
 
   createNewWorkout: (newWorkout) => {
