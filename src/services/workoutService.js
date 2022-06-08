@@ -7,8 +7,9 @@ const getAllWorkouts = () => {
   return workouts;
 };
 
-const getOneWorkout = () => {
-  return;
+const getOneWorkout = (workoutId) => {
+  const workout = Workout.getOneWorkout(workoutId);
+  return workout;
 };
 
 const createNewWorkout = (payload) => {

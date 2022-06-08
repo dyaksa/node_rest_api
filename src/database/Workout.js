@@ -12,6 +12,24 @@ module.exports = {
     };
   },
 
+  getOneWorkout: (workoutId) => {
+    const workout = DB.workouts.find((workout) => workout.id === workoutId);
+    if (workout === undefined) {
+      return {
+        err: "fail",
+        message: "Workout not found",
+        code: 404,
+        data: null,
+      };
+    }
+    return {
+      err: null,
+      code: 200,
+      message: "success get data workout one",
+      data: workout,
+    };
+  },
+
   createNewWorkout: (newWorkout) => {
     const isAlreadyExist =
       DB.workouts.findIndex((workout) => workout.name === newWorkout.name) > -1;

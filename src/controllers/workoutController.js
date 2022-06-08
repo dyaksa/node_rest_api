@@ -20,9 +20,21 @@ const getAllWorkouts = async (req, res) => {
   sendResponse(await postRequest());
 };
 
-const getOneWorkout = (req, res) => {
-  const getOneWorkout = workoutService.getOneWorkout();
-  return res.send("get one workout");
+const getOneWorkout = async (req, res) => {
+  const { workoutId } = req.params;
+  const postRequest = async () => {
+    const getOneWorkout = workoutService.getOneWorkout(workoutId);
+    return getOneWorkout;
+  };
+
+  const sendResponse = async (result) => {
+    if (result.err) {
+      return wrappper.response(res, "fail", result);
+    } else {
+      return wrappper.response(res, "success", result);
+    }
+  };
+  sendResponse(await postRequest());
 };
 
 const createNewWorkout = async (req, res) => {
